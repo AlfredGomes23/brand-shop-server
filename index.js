@@ -44,7 +44,7 @@ async function run() {
 
         //brands collection
         const brandsCollections = client.db('brand-shop').collection('brands');
-        //                    brands routes
+        //brands routes
         //get all brands
         app.get('/brands', async (req, resp) => {
             const result = await brandsCollections.find().toArray();
@@ -53,13 +53,30 @@ async function run() {
 
         //products collection
         const productsCollections = client.db('brand-shop').collection('products');
-        //                  products routes
+        //                 products routes
         //get all products
         app.get('/products', async (req, resp) => {
             const result = await productsCollections.find().toArray();
             resp.send(result);
         });
         //add a product
+        //update a product
+        //delete a product
+        //products collection
+
+        const cart = client.db('brand-shop').collection('cart');
+        //                 cart routes
+        //get all products
+        app.get('/cart', async (req, resp) => {
+            const result = await cart.find().toArray();
+            resp.send(result);
+        });
+        //add a product
+        app.post('/cart', async (req, resp) => {
+            const product = req.body;
+            const result = await cart.insertOne(product);
+            resp.send(result)
+        });
         //update a product
         //delete a product
 
