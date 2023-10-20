@@ -42,14 +42,26 @@ async function run() {
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
 
-        //create brands database collection
-        const brandShopCollections = client.db('brand-shop').collection('brands');
-
-        //brands routes
+        //brands collection
+        const brandsCollections = client.db('brand-shop').collection('brands');
+        //                    brands routes
+        //get all brands
         app.get('/brands', async (req, resp) => {
-            const result = await brandShopCollections.find().toArray();
+            const result = await brandsCollections.find().toArray();
             resp.send(result);
         });
+
+        //products collection
+        const productsCollections = client.db('brand-shop').collection('products');
+        //                  products routes
+        //get all products
+        app.get('/products', async (req, resp) => {
+            const result = await productsCollections.find().toArray();
+            resp.send(result);
+        });
+        //add a product
+        //update a product
+        //delete a product
 
 
     } finally {
