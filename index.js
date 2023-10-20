@@ -42,6 +42,7 @@ async function run() {
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
 
+        //_______________Brands________
         //brands collection
         const brandsCollections = client.db('brand-shop').collection('brands');
         //brands routes
@@ -51,9 +52,9 @@ async function run() {
             resp.send(result);
         });
 
+        //_____________Products__________
         //products collection
         const productsCollections = client.db('brand-shop').collection('products');
-        //                 products routes
         //get all products
         app.get('/products', async (req, resp) => {
             const result = await productsCollections.find().toArray();
@@ -67,6 +68,12 @@ async function run() {
             resp.send(result);
         })
         //add a product
+        app.post('/products', async (req, resp) => {
+            const product = req.body;
+            console.log(product);
+            const result = await productsCollections.insertOne(product);
+            resp.send(result);
+        })
         //update a product
         app.put('/products/:id', async (req, resp) => {
             const id = req.params.id;
@@ -87,23 +94,21 @@ async function run() {
             resp.send(result);
         });
         //delete a product
-        //products collection
 
+        //______________________Cart________________
         const cart = client.db('brand-shop').collection('cart');
-        //                 cart routes
-        //get all products
+        //get cart
         app.get('/cart', async (req, resp) => {
             const result = await cart.find().toArray();
             resp.send(result);
         });
-        //add a product
+        //add  to cart
         app.post('/cart', async (req, resp) => {
             const product = req.body;
             const result = await cart.insertOne(product);
             resp.send(result)
         });
-        //update a product
-        //delete a product
+        //delete from cart
 
 
     } finally {
