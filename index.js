@@ -42,7 +42,10 @@ async function run() {
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
 
-        //_______________Brands________
+
+
+
+        //_______________ Brands _____________
         //brands collection
         const brandsCollections = client.db('brand-shop').collection('brands');
         //brands routes
@@ -52,7 +55,10 @@ async function run() {
             resp.send(result);
         });
 
-        //_____________Products__________
+
+
+
+        //__________________ Products ________________
         //products collection
         const productsCollections = client.db('brand-shop').collection('products');
         //get all products
@@ -95,20 +101,36 @@ async function run() {
         });
         //delete a product
 
-        //______________________Cart________________
+
+
+        //___________________ Cart ________________
+        //cart collection
         const cart = client.db('brand-shop').collection('cart');
-        //get cart
+        //get all cart item
         app.get('/cart', async (req, resp) => {
             const result = await cart.find().toArray();
+            resp.send(result);
+        });
+        //get a cart item
+        app.get('/cart/:id', async (req, resp) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await cart.findOne(query);
             resp.send(result);
         });
         //add  to cart
         app.post('/cart', async (req, resp) => {
             const product = req.body;
             const result = await cart.insertOne(product);
-            resp.send(result)
+            resp.send(result);
         });
         //delete from cart
+        app.delete('/cart/:id', async (req, resp) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await cart.deleteOne(query);
+            resp.send(result);
+        })
 
 
     } finally {
